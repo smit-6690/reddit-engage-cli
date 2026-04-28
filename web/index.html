@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Reddit Engage Dashboard</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <main class="container">
+      <header class="hero">
+        <div>
+          <h1>Reddit Engage Dashboard</h1>
+          <p class="subtitle">Run your pipeline and review leads and drafts in one place.</p>
+        </div>
+        <section class="status" aria-live="polite">
+          <span class="status-label">Status</span>
+          <span id="status">Ready</span>
+        </section>
+      </header>
+
+      <section class="controls card">
+        <div class="section-title-row">
+          <h2>Pipeline Actions</h2>
+          <p class="section-subtitle">Run one step at a time or execute the full flow.</p>
+        </div>
+        <div class="control-buttons">
+          <button data-action="scan">Scan</button>
+          <button data-action="rank">Rank</button>
+          <button data-action="draft">Draft</button>
+          <button data-action="export">Export</button>
+          <button data-action="all" class="primary">Run All</button>
+        </div>
+      </section>
+
+      <section class="stats-grid">
+        <article class="stat-card">
+          <span class="stat-label">Raw Threads</span>
+          <span id="rawCount" class="stat-value">0</span>
+        </article>
+        <article class="stat-card">
+          <span class="stat-label">Ranked Threads</span>
+          <span id="rankedCount" class="stat-value">0</span>
+        </article>
+        <article class="stat-card">
+          <span class="stat-label">Drafts</span>
+          <span id="draftCount" class="stat-value">0</span>
+        </article>
+        <article class="stat-card">
+          <span class="stat-label">Approved</span>
+          <span id="approvedCount" class="stat-value success">0</span>
+        </article>
+        <article class="stat-card">
+          <span class="stat-label">Pending</span>
+          <span id="pendingCount" class="stat-value warning">0</span>
+        </article>
+        <article class="stat-card">
+          <span class="stat-label">Rejected</span>
+          <span id="rejectedCount" class="stat-value danger">0</span>
+        </article>
+      </section>
+
+      <section class="cards">
+        <article class="card wide">
+          <div class="section-title-row">
+            <h2>Configuration</h2>
+            <p class="section-subtitle">Control targeting, filters, and generation settings.</p>
+          </div>
+          <form id="configForm" class="form-grid">
+            <label>Subreddits (comma-separated)
+              <input id="cfgSubreddits" type="text" />
+            </label>
+            <label>Keywords (comma-separated)
+              <input id="cfgKeywords" type="text" />
+            </label>
+            <label>Days Back
+              <input id="cfgDaysBack" type="number" min="1" />
+            </label>
+            <label>Min Upvotes
+              <input id="cfgMinUpvotes" type="number" min="0" />
+            </label>
+            <label>Min Comments
+              <input id="cfgMinComments" type="number" min="0" />
+            </label>
+            <label>Max Threads
+              <input id="cfgMaxThreads" type="number" min="1" />
+            </label>
+            <label>Brand Name
+              <input id="cfgBrandName" type="text" />
+            </label>
+            <label>Brand Summary
+              <input id="cfgBrandSummary" type="text" />
+            </label>
+            <label>Voice
+              <input id="cfgVoice" type="text" />
+            </label>
+            <label>LLM Provider
+              <select id="cfgProvider">
+                <option value="ollama">ollama</option>
+                <option value="openrouter">openrouter</option>
+              </select>
+            </label>
+            <label>LLM Model
+              <input id="cfgModel" type="text" />
+            </label>
+            <button type="submit" class="primary">Save Config</button>
+            <button type="button" id="suggestKeywordsBtn">Suggest Keywords</button>
+          </form>
+          <div id="keywordSuggestions" class="suggestions"></div>
+        </article>
+
+        <article class="card wide">
+          <div class="section-title-row">
+            <h2>Leads</h2>
+            <p class="section-subtitle">Search and filter ranked thread opportunities.</p>
+          </div>
+          <div class="toolbar">
+            <input id="leadSearch" placeholder="Search leads..." />
+            <input id="leadSubreddit" placeholder="Filter subreddit..." />
+            <button id="leadSearchBtn">Apply</button>
+          </div>
+          <div id="rankedList" class="list"></div>
+          <div class="pager">
+            <button id="leadPrev">Prev</button>
+            <span id="leadPageLabel">Page 1</span>
+            <button id="leadNext">Next</button>
+          </div>
+        </article>
+
+        <article class="card wide">
+          <div class="section-title-row">
+            <h2>Draft Queue</h2>
+            <p class="section-subtitle">Review, edit, approve, or regenerate draft replies.</p>
+          </div>
+          <div class="toolbar">
+            <input id="draftSearch" placeholder="Search drafts..." />
+            <select id="draftStatusFilter">
+              <option value="">All</option>
+              <option value="pending">Pending</option>
+              <option value="approved">Approved</option>
+              <option value="rejected">Rejected</option>
+            </select>
+            <button id="draftSearchBtn">Apply</button>
+          </div>
+          <div id="draftList" class="list"></div>
+          <div class="pager">
+            <button id="draftPrev">Prev</button>
+            <span id="draftPageLabel">Page 1</span>
+            <button id="draftNext">Next</button>
+          </div>
+        </article>
+      </section>
+    </main>
+    <script src="/app.js"></script>
+  </body>
+</html>

@@ -1,0 +1,28 @@
+{
+  "name": "reddit-engage-cli",
+  "version": "0.1.0",
+  "description": "CLI to discover Reddit leads and prepare AI-assisted reply drafts.",
+  "main": "src/index.js",
+  "type": "commonjs",
+  "bin": {
+    "reddit-engage": "src/index.js"
+  },
+  "scripts": {
+    "start": "node src/index.js",
+    "ui": "node src/ui-server.js",
+    "test": "node --test",
+    "scan": "node src/index.js scan",
+    "rank": "node src/index.js rank",
+    "draft": "node src/index.js draft",
+    "export": "node src/index.js export",
+    "all": "node src/index.js all"
+  },
+  "keywords": [
+    "reddit",
+    "marketing",
+    "cli",
+    "lead-generation",
+    "ai"
+  ],
+  "license": "MIT"
+}
