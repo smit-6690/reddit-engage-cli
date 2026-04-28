@@ -147,3 +147,12 @@ You can use OpenRouter free-tier models by changing `engage.config.json`:
 - `export` includes compliance verdict and flags for each draft.
 - Review states are stored in `data/review-status.json`.
 - Threads with id `error-*` are excluded from ranking/drafting.
+
+## Screenshots
+<img width="1214" height="644" alt="image" src="https://github.com/user-attachments/assets/ed15b3be-24b3-4f47-8c39-7d615ec80c25" />
+<img width="1214" height="753" alt="image" src="https://github.com/user-attachments/assets/898607ca-69a1-4e51-9b14-b87649d6abd8" />
+<img width="1214" height="747" alt="image" src="https://github.com/user-attachments/assets/4ccde82e-9e08-47de-a700-3b22c78fd69a" />
+
+
+
+
