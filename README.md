@@ -1,17 +1,72 @@
-# Reddit-Engage-CLI
+<div align="center">
 
-A lightweight CLI to discover relevant Reddit threads, rank lead opportunities, and prepare helpful draft replies for manual review.
+# 🤖 Reddit Engage CLI
 
-## Why this exists
+[![Node.js](https://img.shields.io/badge/Node.js-18%2B-green?style=for-the-badge&logo=node.js&logoColor=white)](https://nodejs.org/)
+[![Reddit OAuth](https://img.shields.io/badge/Reddit-OAuth2-orange?style=for-the-badge&logo=reddit&logoColor=white)](https://www.reddit.com/prefs/apps)
+[![LLM](https://img.shields.io/badge/LLM-Ollama%20%2F%20OpenRouter-blue?style=for-the-badge)](https://ollama.com/)
+[![Dashboard](https://img.shields.io/badge/Web%20UI-Dashboard-purple?style=for-the-badge)](http://localhost:3080)
 
-Manual Reddit prospecting is slow. This tool gives you a repeatable pipeline:
+**A lightweight CLI to discover relevant Reddit threads, rank lead opportunities, and prepare helpful draft replies for manual review.**
 
-1. Find thread opportunities (`scan`)
-2. Rank opportunities (`rank`)
-3. Draft helpful replies (`draft`)
-4. Export a review queue (`export`)
+[Overview](#-overview) • [Pipeline](#-pipeline) • [Quick Start](#-quick-start) • [Commands](#-commands) • [Web UI](#-web-ui-dashboard) • [Config](#-config) • [Reddit OAuth](#-reddit-oauth-setup) • [LLM Setup](#-free-llm-setup) • [Screenshots](#-screenshots)
 
-## Quick start
+</div>
+
+---
+
+## 📌 Overview
+
+Manual Reddit prospecting is slow. **Reddit Engage CLI** gives you a repeatable, automated pipeline to surface relevant threads, score lead quality, and generate helpful draft replies — all from your terminal.
+
+The system integrates:
+- **Reddit OAuth2** for reliable, authenticated thread fetching
+- **Free LLM drafting** via Ollama (local) or OpenRouter (cloud)
+- **Compliance guardrails** for reply safety and brand voice
+- **Web UI dashboard** for review, editing, and approval workflows
+
+> **Key Capability:** Go from zero to a curated, draft-ready lead queue in minutes — with no paid APIs required.
+
+---
+
+## 🔄 Pipeline
+
+The tool routes each Reddit prospecting job through a structured 4-stage pipeline:
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                    REDDIT ENGAGE CLI PIPELINE                       │
+│                                                                     │
+│   ┌──────────────┐    ┌───────────────┐    ┌──────────────────┐    │
+│   │ 1. SCAN      │───▶│ 2. RANK       │───▶│ 3. DRAFT         │    │
+│   │              │    │               │    │                  │    │
+│   │ Reddit OAuth │    │ Signal-based  │    │ LLM + Template   │    │
+│   │ Thread Fetch │    │ Lead Scoring  │    │ Reply Generation │    │
+│   │ + Subreddit  │    │               │    │                  │    │
+│   │ Discovery    │    └───────────────┘    └────────┬─────────┘    │
+│   └──────────────┘                                  │              │
+│                                                     ▼              │
+│   ┌──────────────────────────────────────────────────────────┐     │
+│   │ 4. EXPORT                                                │     │
+│   │                                                          │     │
+│   │  Compliance verdict · Review queue · Status tracking     │     │
+│   └──────────────────────────────────────────────────────────┘     │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### Stage Responsibilities
+
+| Stage | Role | Key Feature |
+|---|---|---|
+| **Scan** | Fetches threads from target subreddits via Reddit OAuth | Auto-discovers related subreddits from natural-language topics |
+| **Rank** | Scores threads by upvotes, comments, recency, and keyword match | Configurable signal filters (`minUpvotes`, `minComments`, `daysBack`) |
+| **Draft** | Generates helpful replies using LLM with brand voice context | Falls back to template if LLM is unavailable |
+| **Export** | Produces a `review-queue.md` with compliance flags | Persists review states (`approve` / `reject` / `pending`) |
+
+---
+
+## ⚡ Quick Start
 
 ```bash
 cd ~/Desktop/Projects/reddit-engage-cli
@@ -19,25 +74,31 @@ node src/index.js init
 node src/index.js all
 ```
 
-Generated files:
+Generated output files:
 
-- `data/threads.raw.json`
-- `data/threads.ranked.json`
-- `data/drafts.json`
-- `data/review-queue.md`
+| File | Contents |
+|---|---|
+| `data/threads.raw.json` | Raw fetched threads |
+| `data/threads.ranked.json` | Scored and ranked leads |
+| `data/drafts.json` | LLM-generated reply drafts |
+| `data/review-queue.md` | Human-readable review queue |
 
-## Commands
+---
+
+## 🖥 Commands
 
 ```bash
-node src/index.js init
-node src/index.js scan
-node src/index.js rank
-node src/index.js draft
-node src/index.js export
-node src/index.js all
+node src/index.js init      # Initialize config and data directory
+node src/index.js scan      # Fetch threads from Reddit
+node src/index.js rank      # Score and rank thread opportunities
+node src/index.js draft     # Generate reply drafts with LLM
+node src/index.js export    # Export review queue with compliance report
+node src/index.js all       # Run full pipeline end-to-end
 ```
 
-## Web UI Dashboard
+---
+
+## 🌐 Web UI Dashboard
 
 Run the local dashboard:
 
@@ -48,53 +109,87 @@ npm run ui
 
 Open [http://localhost:3080](http://localhost:3080)
 
-Features:
+### Dashboard Features
 
-- One-click `Scan`, `Rank`, `Draft`, `Export`, or `Run All`
-- Live counts for raw/ranked/drafts
-- Editable config form (`engage.config.json`)
-- Leads table with search, subreddit filter, and pagination
-- Draft queue with search, status filter, and pagination
-- Approve/reject/pending review workflow with persisted status
-- Top draft preview with compliance status
-- Inline draft edit + save
-- One-click regenerate for single draft with style variants
-- Auto keyword suggestions from ranked threads
+| Feature | Description |
+|---|---|
+| **Pipeline Controls** | One-click `Scan`, `Rank`, `Draft`, `Export`, or `Run All` |
+| **Live Counts** | Real-time counts for raw threads / ranked leads / drafts |
+| **Config Editor** | Editable `engage.config.json` form in the UI |
+| **Leads Table** | Search, subreddit filter, and pagination |
+| **Draft Queue** | Search, status filter, approve / reject / pending workflow |
+| **Draft Preview** | Top draft preview with compliance status indicator |
+| **Inline Editing** | Edit and save drafts directly in the UI |
+| **Regenerate** | One-click regeneration for single drafts with style variants |
+| **Keyword Suggestions** | Auto-suggested keywords from ranked threads |
 
-## Config
+---
 
-Edit `engage.config.json`:
+## ⚙️ Config
 
-- `subreddits`: target communities
-- `subredditQuery`: optional natural-language topic used to auto-discover related subreddits
-- `autoDiscoverSubreddits`: set `true` to expand topic queries into subreddit names
-- `maxDiscoveredSubreddits`: max subreddit suggestions per query
-- `keywords`: problem/intent phrases
-- `daysBack`: search recency window
-- `minUpvotes`, `minComments`: signal filters
-- `maxThreads`: cap result size
-- `brandName`, `brandSummary`, `voice`: draft context
-- `llm`: free-model provider settings
-- `llm.timeoutMs`: max wait per LLM request before fallback template (default `4000`)
-- `compliance`: guardrails for reply safety
+Edit `engage.config.json` to customize the pipeline:
 
-## Reddit OAuth setup (required for reliable scan)
+### Subreddit Discovery
 
-Reddit frequently blocks unauthenticated public JSON fetches (`403`). This project now supports official Reddit OAuth.
+| Key | Description |
+|---|---|
+| `subreddits` | Explicit list of target communities |
+| `subredditQuery` | Natural-language topic for auto-discovery |
+| `autoDiscoverSubreddits` | Set `true` to expand topics into subreddit names |
+| `maxDiscoveredSubreddits` | Max subreddit suggestions per query |
 
-1) Create a Reddit app at [https://www.reddit.com/prefs/apps](https://www.reddit.com/prefs/apps)
-- choose **script** app type
-- copy `client_id` and `client_secret`
+### Signal Filters
 
-2) Create `.env` from template:
+| Key | Description |
+|---|---|
+| `keywords` | Problem/intent phrases to match |
+| `daysBack` | Search recency window |
+| `minUpvotes` | Minimum upvote threshold |
+| `minComments` | Minimum comment threshold |
+| `maxThreads` | Cap result size |
+
+### Draft & Brand
+
+| Key | Description |
+|---|---|
+| `brandName` | Your brand name injected into drafts |
+| `brandSummary` | One-line brand description for LLM context |
+| `voice` | Tone/style instructions for draft generation |
+
+### LLM Settings
+
+| Key | Description |
+|---|---|
+| `llm` | Free-model provider settings |
+| `llm.timeoutMs` | Max wait per LLM request before fallback template (default: `4000`) |
+
+### Compliance
+
+| Key | Description |
+|---|---|
+| `compliance` | Guardrails object for reply safety rules |
+
+---
+
+## 🔐 Reddit OAuth Setup
+
+Reddit frequently blocks unauthenticated public JSON fetches (`403`). This project supports official Reddit OAuth for reliable scanning.
+
+**1. Create a Reddit app**
+
+Go to [https://www.reddit.com/prefs/apps](https://www.reddit.com/prefs/apps):
+- Choose **script** app type
+- Copy `client_id` and `client_secret`
+
+**2. Create `.env` from template**
 
 ```bash
 cp .env.example .env
 ```
 
-3) Fill `.env`:
+**3. Fill `.env`**
 
-```bash
+```env
 REDDIT_CLIENT_ID=...
 REDDIT_CLIENT_SECRET=...
 REDDIT_USER_AGENT=reddit-engage-cli/0.3.0 by u/<your_username>
@@ -102,43 +197,50 @@ REDDIT_USERNAME=<your_username>
 REDDIT_PASSWORD=<your_password>
 ```
 
-4) Run scan again:
+**4. Run scan**
 
 ```bash
 node src/index.js scan
 node src/index.js rank
 ```
 
-If scan still fails, verify credentials and that your Reddit app type is `script`.
+> If scan still fails, verify credentials and confirm your Reddit app type is set to `script`.
 
-## Free LLM setup (recommended)
+---
 
-This project defaults to a free local model via Ollama.
+## 🆓 Free LLM Setup
 
-1) Install Ollama: [https://ollama.com](https://ollama.com)
-2) Pull a free model:
+This project defaults to a free local model via **Ollama**.
+
+**1. Install Ollama:** [https://ollama.com](https://ollama.com)
+
+**2. Pull a free model:**
 
 ```bash
 ollama pull llama3.2:3b
 ```
 
-3) Keep Ollama running, then execute:
+**3. Keep Ollama running, then execute:**
 
 ```bash
 node src/index.js all
 ```
 
-If the model is unavailable, the CLI automatically falls back to template drafting so your pipeline still completes.
+> If the model is unavailable, the CLI automatically falls back to template drafting — your pipeline still completes.
 
-## Optional free cloud model
+### Optional: Free Cloud Model via OpenRouter
 
-You can use OpenRouter free-tier models by changing `engage.config.json`:
+Change `engage.config.json`:
 
-- `llm.provider = "openrouter"`
-- `llm.openRouterApiKey = "<your key>"`
-- keep model as `meta-llama/llama-3.3-8b-instruct:free` (or another `:free` model)
+| Key | Value |
+|---|---|
+| `llm.provider` | `"openrouter"` |
+| `llm.openRouterApiKey` | `"<your key>"` |
+| `llm.model` | `meta-llama/llama-3.3-8b-instruct:free` (or another `:free` model) |
 
-## Current behavior notes
+---
+
+## 📝 Current Behavior Notes
 
 - `scan` uses Reddit OAuth automatically when env credentials are present; otherwise falls back to public endpoint.
 - `scan` accepts natural-language subreddit inputs and can auto-discover related subreddit names.
@@ -148,11 +250,20 @@ You can use OpenRouter free-tier models by changing `engage.config.json`:
 - Review states are stored in `data/review-status.json`.
 - Threads with id `error-*` are excluded from ranking/drafting.
 
-## Screenshots
+---
+
+## 📸 Screenshots
+
 <img width="1214" height="644" alt="image" src="https://github.com/user-attachments/assets/ed15b3be-24b3-4f47-8c39-7d615ec80c25" />
 <img width="1214" height="753" alt="image" src="https://github.com/user-attachments/assets/898607ca-69a1-4e51-9b14-b87649d6abd8" />
 <img width="1214" height="747" alt="image" src="https://github.com/user-attachments/assets/4ccde82e-9e08-47de-a700-3b22c78fd69a" />
 
+---
 
+<div align="center">
 
+**Built by [Smit Ardeshana](https://www.linkedin.com/in/smit-ardeshana-956512220/) · [GitHub](https://github.com/smit-6690)**
 
+*If this project helped you, please consider giving it a ⭐*
+
+</div>
