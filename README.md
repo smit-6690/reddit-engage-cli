@@ -33,11 +33,7 @@ The system integrates:
 
 The tool routes each Reddit prospecting job through a structured 4-stage pipeline:
 
-
-```
-<img width="476" height="636" alt="Screenshot 2026-04-28 at 5 34 11 PM" src="https://github.com/user-attachments/assets/3f14068b-458c-43d1-8d28-3dd03d0f0fd1" />
-
-```
+<img width="476" height="636" alt="Screenshot 2026-04-28 at 5 34 11 PM" src="https://github.com/user-attachments/assets/46e2760e-cc60-424b-8046-f84d2b451dc5" />
 
 ### Stage Responsibilities
 
